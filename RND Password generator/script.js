@@ -11,7 +11,22 @@ const upperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const lowerLetters = "abcdefghijklmnopqrstuvwxyz";
 const numbers = "0123456789";
 const symbols = "!@#$%^&*()_+=";
-const names = "Abcbnjdnfcnnfn";
+
+const names = ["John", "Alice", "David", "Emily", "Michael", "Sarah"];
+const animals = ["Lion", "Tiger", "Bear", "Elephant", "Dolphin", "Penguin"];
+const coffee = [
+  "Latte",
+  "Espresso",
+  "Cappuccino",
+  "Mocha",
+  "Americano",
+  "Macchiato",
+];
+const countries = ["USA", "Canada", "UK", "Germany", "France", "Japan"];
+
+function getRandomElement(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
 function getLowercase() {
   return lowerLetters[Math.floor(Math.random() * lowerLetters.length)];
@@ -31,7 +46,6 @@ function getSymbol() {
 
 function generatePassword() {
   const len = lenEl.value;
-
   let password = "";
 
   if (upperEl.checked) {
@@ -50,35 +64,16 @@ function generatePassword() {
     password += getSymbol();
   }
 
-  for (let i = password.length; i < len; i++) {
-    const x = generateX();
-    password += x;
+  if (password.length < len) {
+    while (password.length < len) {
+      const element = getRandomElement(
+        names.concat(animals, coffee, countries)
+      );
+      password += element;
+    }
   }
 
-  pwEl.innerText = password;
-}
-
-function generateX() {
-  const xs = [];
-  if (upperEl.checked) {
-    xs.push(getUppercase());
-  }
-
-  if (lowerEl.checked) {
-    xs.push(getLowercase());
-  }
-
-  if (numberEl.checked) {
-    xs.push(getNumber());
-  }
-
-  if (symbolEl.checked) {
-    xs.push(getSymbol());
-  }
-
-  if (xs.length === 0) return "";
-
-  return xs[Math.floor(Math.random() * xs.length)];
+  pwEl.innerText = password.slice(0, len);
 }
 
 generateEl.addEventListener("click", generatePassword);
